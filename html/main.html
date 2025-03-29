@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel ="script" href="../js/app.js">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <title>Trello</title>
+</head>
+<body>
+  <!-- <section id="login-page">
+  <div class="main">
+    <div class="modal">
+      <input type="text" id="card-title" placeholder="Insira seu e-mail" />
+      <button type="checkbox"><p>Continuar conectado</p></button>
+      <button>Continuar</button>
+      <p>Ou prossiga com :</p>
+      <div class="social-login">
+        <button class="google"><p>Google</p></button>
+        <button class="github"><p>Github</p></button>
+        <button class="facebook"><p>Facebook</p></button>
+        <button class="apple"><p>Apple</p></button>
+    </div>
+    <div>
+    <a>Nao consegue entrar ?</a>
+    <p> . </p>
+    <a>Criar uma conta</a>
+    </div>
+    <div class="footer">
+      <p>Ao continuar, você concorda com os <a href="#">Termos de Serviço</a> e a <a href="#">Política de Privacidade</a> do Trello.</p>
+      <p>Powerd by ppedro andrade ©</p>
+    </div>
+  </div>
+  </div>
+</section> -->
+<section id="app">
+<div class="main">
+<header class="header">
+  <div class="header-left">
+    <img src="../assets/Logo.svg" alt="Logo Trello" class="logo" />
+    <button class="menu-button">
+      <img src="../assets/trello-mark-blue.svg" alt="Boards" />
+      Boards
+    </button>
+    <span class="divider"></span>
+  </div>
+
+<div class="header-center">
+  <div class="search-box">
+    <input type="text" class="search-input" />
+    <button class="search-icon"><img src="../assets/search-outline.svg" alt=""></button>
+  </div>
+</div>
+
+  <div class="header-right">
+    <button class="icon-btn"><img src="../assets/plus-circle-outline (1).svg" alt=""></button>
+    <button class="icon-btn"><img src="../assets/alert-circle-outline.svg" alt=""></button>
+    <button class="icon-btn"><img src="../assets/bell-outline.svg" alt=""></button>
+    <img src="../assets/Male User.svg" alt="Avatar" class="avatar" />
+  </div>
+</header>
+<div class="card-fixe">
+<div class="team-container">
+    <div class="team-header">
+      <span id="team-title-text">Times</span>
+      <input type="text" id="team-title-input" style="display: none;" />
+      <button id="edit-title-btn" class="button-card">...</button>
+    </div>
+
+    <ul class="team-list">
+      <li class="team-item">
+        <input type="color" class="color-picker" value="#">
+         back-end
+      </li>
+      <li class="team-item">
+        <input type="color" class="color-picker" value="#">
+         front-end
+      </li>
+      <li class="team-item">
+        <input type="color" class="color-picker" value="#">
+         PM
+      </li>
+      <li class="team-item">
+        <input type="color" class="color-picker" value="#">
+         Criação
+      </li>
+      <li class="team-item">
+        <input type="color" class="color-picker" value="#">
+         QA
+      </li>
+    </ul>
+
+    <div class="add-function">+ Nova função</div>
+  </div>
+
+</div>
+</div>
+</section>
+</body>
+</html>
