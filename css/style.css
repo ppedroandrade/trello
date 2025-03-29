@@ -162,11 +162,6 @@ body {
   border-radius: 50px;
 }
 
-.tag {
-  width: 20px;
-  height: 4px;
-  border-radius: 2px;
-}
 
 .add-function {
   margin-top: 1rem;
@@ -178,3 +173,40 @@ body {
   cursor: pointer;
 }
 
+.actions {
+  margin-left: auto;
+  position: relative;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.menu-options {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 20px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.menu-options button {
+  display: block;
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-options button:hover {
+  background-color: #f0f0f0;
+}
