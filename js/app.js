@@ -1,36 +1,27 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
   const editBtn = document.getElementById("edit-title-btn");
   const titleText = document.getElementById("team-title-text");
   const titleInput = document.getElementById("team-title-input");
 
+  // Ao clicar no botão (⋮), troca o texto pelo input
   editBtn.addEventListener("click", () => {
-    titleInput.value = titleText.textContent;
+    titleInput.value = titleText.textContent.trim();
     titleText.style.display = "none";
     titleInput.style.display = "inline-block";
     titleInput.focus();
   });
 
+  // Quando o input perde o foco, salva o texto e volta para o span
   titleInput.addEventListener("blur", () => {
-    titleText.textContent = titleInput.value;
+    titleText.textContent = titleInput.value.trim() || "Sem título";
     titleInput.style.display = "none";
     titleText.style.display = "inline-block";
   });
 
+  // Se apertar Enter, faz o mesmo que blur
   titleInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       titleInput.blur();
     }
-  });
-
-  // Atualiza a cor da tag quando o color picker muda
-  const colorPickers = document.querySelectorAll(".color-picker");
-  colorPickers.forEach(picker => {
-    picker.addEventListener("input", (e) => {
-      const tag = e.target.nextElementSibling;
-      tag.style.backgroundColor = e.target.value;
-      if (tag.classList.contains("tag")) {
-        tag.style.color = e.target.value === "#ffffff" ? "#000000" : "#ffffff";
-      }
-    });
   });
 });
