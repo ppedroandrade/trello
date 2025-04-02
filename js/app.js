@@ -1,56 +1,15 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const editBtn = document.getElementById("edit-title-btn");
-  const titleText = document.getElementById("team-title-text");
-  const titleInput = document.getElementById("team-title-input");
+document.addEventListener("DOMContentLoaded", () => {
+  const wrapper = document.querySelector(".cards");
+  const botaoAdicionarLista = document.querySelector(".add-list");
 
-  // Carrega dados salvos
-  carregarTituloPrincipal();
-  carregarTimes();
+  carregarDoLocalStorage();
 
-  // Editar o título principal
-  editBtn.addEventListener("click", () => {
-    titleInput.value = titleText.textContent.trim();
-    titleText.style.display = "none";
-    titleInput.style.display = "inline-block";
-    titleInput.focus();
+  botaoAdicionarLista.addEventListener("click", () => {
+    const lista = criarLista("Nova Lista", []);
+    wrapper.insertBefore(lista, wrapper.querySelector(".title-fixe"));
+    salvarNoLocalStorage();
   });
 
-  titleInput.addEventListener("blur", () => {
-    const novoTitulo = titleInput.value.trim() || "Sem título";
-    titleText.textContent = novoTitulo;
-    titleInput.style.display = "none";
-    titleText.style.display = "inline-block";
-    localStorage.setItem("titulo_principal", novoTitulo);
-  });
-
-  titleInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") titleInput.blur();
-  });
-
-  // Criar novo item
-  document.querySelector(".add-function").addEventListener("click", () => {
-    const ul = document.querySelector(".team-list");
-
-    const li = document.createElement("li");
-    li.className = "team-item";
-    li.innerHTML = `
-      <input type="color" class="color-picker" value="#000000">
-      <span class="team-name">Novo time</span>
-      <div class="actions">
-        <button class="menu-btn"><img src="../assets/Combined Shape.svg" alt=""></button>
-        <div class="menu-options">
-          <button class="edit-btn">Editar</button>
-          <button class="delete-btn">Excluir</button>
-        </div>
-      </div>
-    `;
-
-    ul.appendChild(li);
-    aplicarEventosItem(li);
-    salvarTimes();
-  });
-
-  // Fecha menus se clicar fora
   document.addEventListener("click", (e) => {
     if (!e.target.closest(".actions")) {
       document.querySelectorAll(".menu-options").forEach(menu => {
@@ -60,47 +19,116 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-function aplicarEventosItem(item) {
-  const colorPicker = item.querySelector(".color-picker");
-  let tag = item.querySelector(".tag");
+function criarLista(titulo = "Sem título", cards = []) {
+  const container = document.createElement("div");
+  container.className = "team-container";
 
-  // Cria a tag visual se ainda não existir
-  if (!tag) {
-    tag = document.createElement("span");
-    tag.className = "tag";
-    tag.style.backgroundColor = colorPicker.value;
-    colorPicker.insertAdjacentElement("afterend", tag);
-  }
+  container.innerHTML = `
+    <div class="team-header">
+      <span class="team-title-text">${titulo}</span>
+      <input type="text" class="team-title-input" style="display: none;" />
+      <div class="actions">
+        <button class="menu-btn"><img src="../assets/Combined Shape.svg" alt=""></button>
+        <div class="menu-options">
+          <button class="edit-btn">Editar</button>
+          <button class="delete-btn">Excluir</button>
+        </div>
+      </div>
+    </div>
+    <ul class="team-list"></ul>
+    <div class="add-function">+ Adicionar um cartão</div>
+  `;
 
-  // Atualiza a cor visual quando mudar o input
-  colorPicker.addEventListener("input", () => {
-    tag.style.backgroundColor = colorPicker.value;
-    salvarTimes();
+  const ul = container.querySelector(".team-list");
+
+  cards.forEach(card => {
+    const li = criarCard(card.nome, card.cor);
+    ul.appendChild(li);
   });
 
-  // Menu de opções
+  aplicarEdicaoTitulo(container);
+  aplicarEventosAddFunction(container);
+
+  return container;
+}
+
+function criarCard(nome = "Sem nome", cor = "#000000") {
+  const li = document.createElement("li");
+  li.className = "team-item";
+  li.innerHTML = `
+    <input type="color" class="color-picker" value="${cor}">
+    <span class="team-name">${nome}</span>
+    <div class="actions">
+      <button class="menu-btn"><img src="../assets/Combined Shape.svg" alt=""></button>
+      <div class="menu-options">
+        <button class="edit-btn">Editar</button>
+        <button class="delete-btn">Excluir</button>
+      </div>
+    </div>
+  `;
+  aplicarEventosItem(li);
+  return li;
+}
+
+function aplicarEdicaoTitulo(container) {
+  const span = container.querySelector(".team-title-text");
+  const input = container.querySelector(".team-title-input");
+  const btnMenu = container.querySelector(".menu-btn");
+
+  btnMenu.addEventListener("click", () => {
+    const menu = container.querySelector(".menu-options");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+  });
+
+  container.querySelector(".edit-btn").addEventListener("click", () => {
+    input.value = span.textContent;
+    span.style.display = "none";
+    input.style.display = "inline-block";
+    input.focus();
+    container.querySelector(".menu-options").style.display = "none";
+  });
+
+  input.addEventListener("blur", () => {
+    span.textContent = input.value.trim() || "Sem título";
+    span.style.display = "inline-block";
+    input.style.display = "none";
+    salvarNoLocalStorage();
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") input.blur();
+  });
+
+  container.querySelector(".delete-btn").addEventListener("click", () => {
+    container.remove();
+    salvarNoLocalStorage();
+  });
+}
+
+function aplicarEventosAddFunction(container) {
+  const addBtn = container.querySelector(".add-function");
+  const ul = container.querySelector(".team-list");
+
+  addBtn.addEventListener("click", () => {
+    const card = criarCard("Novo time", "#000000");
+    ul.appendChild(card);
+    salvarNoLocalStorage();
+  });
+}
+
+function aplicarEventosItem(item) {
   const menuBtn = item.querySelector(".menu-btn");
-  const menuOptions = item.querySelector(".menu-options");
+  const menu = item.querySelector(".menu-options");
 
   menuBtn.addEventListener("click", () => {
-    document.querySelectorAll(".menu-options").forEach(menu => {
-      if (menu !== menuOptions) menu.style.display = "none";
-    });
-    menuOptions.style.display = menuOptions.style.display === "block" ? "none" : "block";
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
   });
 
-  // Excluir item
-  item.querySelector(".delete-btn").addEventListener("click", () => {
-    item.remove();
-    salvarTimes();
-  });
-
-  // Editar nome
   item.querySelector(".edit-btn").addEventListener("click", () => {
     const nameSpan = item.querySelector(".team-name");
     const input = document.createElement("input");
     input.type = "text";
-    input.value = nameSpan.textContent.trim();
+    input.value = nameSpan.textContent;
     input.className = "edit-input";
 
     nameSpan.replaceWith(input);
@@ -111,57 +139,52 @@ function aplicarEventosItem(item) {
       newSpan.className = "team-name";
       newSpan.textContent = input.value || "Sem nome";
       input.replaceWith(newSpan);
-      salvarTimes();
+      salvarNoLocalStorage();
     });
 
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter") input.blur();
     });
 
-    menuOptions.style.display = "none";
+    menu.style.display = "none";
+  });
+
+  item.querySelector(".delete-btn").addEventListener("click", () => {
+    item.remove();
+    salvarNoLocalStorage();
+  });
+
+  item.querySelector(".color-picker").addEventListener("input", () => {
+    salvarNoLocalStorage();
   });
 }
 
-// Salva os times no localStorage
-function salvarTimes() {
-  const times = [];
-  document.querySelectorAll(".team-item").forEach(item => {
-    const nome = item.querySelector(".team-name")?.textContent || "Sem nome";
-    const cor = item.querySelector(".color-picker")?.value || "#000000";
-    times.push({ nome, cor });
+function salvarNoLocalStorage() {
+  const listas = [];
+
+  document.querySelectorAll(".team-container").forEach(container => {
+    const titulo = container.querySelector(".team-title-text")?.textContent || "Sem título";
+    const cards = [];
+    container.querySelectorAll(".team-item").forEach(item => {
+      const nome = item.querySelector(".team-name")?.textContent || "Sem nome";
+      const cor = item.querySelector(".color-picker")?.value || "#000000";
+      cards.push({ nome, cor });
+    });
+    if (cards.length > 0 || titulo !== "Nova Lista") {
+      listas.push({ titulo, cards });
+    }
   });
-  localStorage.setItem("times", JSON.stringify(times));
+
+  localStorage.setItem("listas", JSON.stringify(listas));
 }
 
-// Carrega os times do localStorage
-function carregarTimes() {
-  const times = JSON.parse(localStorage.getItem("times")) || [];
-  const ul = document.querySelector(".team-list");
-  ul.innerHTML = "";
+function carregarDoLocalStorage() {
+  const listasSalvas = JSON.parse(localStorage.getItem("listas")) || [];
+  const wrapper = document.querySelector(".cards");
+  const btn = wrapper.querySelector(".title-fixe");
 
-  times.forEach(time => {
-    const li = document.createElement("li");
-    li.className = "team-item";
-    li.innerHTML = `
-      <input type="color" class="color-picker" value="${time.cor}">
-      <span class="team-name">${time.nome}</span>
-      <div class="actions">
-        <button class="menu-btn"><img src="../assets/Combined Shape.svg" alt=""></button>
-        <div class="menu-options">
-          <button class="edit-btn">Editar</button>
-          <button class="delete-btn">Excluir</button>
-        </div>
-      </div>
-    `;
-    ul.appendChild(li);
-    aplicarEventosItem(li);
+  listasSalvas.forEach(lista => {
+    const novaLista = criarLista(lista.titulo, lista.cards);
+    wrapper.insertBefore(novaLista, btn);
   });
-}
-
-// Carrega o título principal
-function carregarTituloPrincipal() {
-  const salvo = localStorage.getItem("titulo_principal");
-  if (salvo) {
-    document.getElementById("team-title-text").textContent = salvo;
-  }
 }

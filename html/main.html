@@ -1,97 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-  <title>Trello</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trello Clone</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- <section id="login-page">
-  <div class="main">
-    <div class="modal">
-      <input type="text" id="card-title" placeholder="Insira seu e-mail" />
-      <button type="checkbox"><p>Continuar conectado</p></button>
-      <button>Continuar</button>
-      <p>Ou prossiga com :</p>
-      <div class="social-login">
-        <button class="google"><p>Google</p></button>
-        <button class="github"><p>Github</p></button>
-        <button class="facebook"><p>Facebook</p></button>
-        <button class="apple"><p>Apple</p></button>
-    </div>
-    <div>
-    <a>Nao consegue entrar ?</a>
-    <p> . </p>
-    <a>Criar uma conta</a>
-    </div>
-    <div class="footer">
-      <p>Ao continuar, você concorda com os <a href="#">Termos de Serviço</a> e a <a href="#">Política de Privacidade</a> do Trello.</p>
-      <p>Powerd by ppedro andrade ©</p>
-    </div>
-  </div>
-  </div>
-</section> -->
-<section id="app">
-<div class="main">
-<header class="header">
-  <div class="header-left">
-    <img src="../assets/Logo.svg" alt="Logo Trello" class="logo" />
-    <button class="menu-button">
-      <img src="../assets/trello-mark-blue.svg" alt="Boards" />
-      Boards
-    </button>
-    <span class="divider"></span>
-  </div>
+  <section id="app">
+    <div class="main">
+      <header class="header">
+        <div class="header-left">
+          <img src="../assets/Logo.svg" alt="Logo Trello" class="logo" />
+          <button class="menu-button">
+            <img src="../assets/trello-mark-blue.svg" alt="Boards" />
+            Boards
+          </button>
+          <span class="divider"></span>
+        </div>
 
-<div class="header-center">
-  <div class="search-box">
-    <input type="text" class="search-input" />
-    <button class="search-icon"><img src="../assets/search-outline.svg" alt=""></button>
-  </div>
-</div>
+        <div class="header-center">
+          <div class="search-box">
+            <input type="text" class="search-input" />
+            <button class="search-icon">
+              <img src="../assets/search-outline.svg" alt="">
+            </button>
+          </div>
+        </div>
 
-  <div class="header-right">
-    <button class="icon-btn"><img src="../assets/plus-circle-outline (1).svg" alt=""></button>
-    <button class="icon-btn"><img src="../assets/alert-circle-outline.svg" alt=""></button>
-    <button class="icon-btn"><img src="../assets/bell-outline.svg" alt=""></button>
-    <img src="../assets/Male User.svg" alt="Avatar" class="avatar" />
-  </div>
-</header>
-<div class="card-fixe">
-<div class="team-container">
-    <div class="team-header">
-      <span id="team-title-text">Times</span>
-      <input type="text" id="team-title-input" style="display: none;" />
-      <button id="edit-title-btn" class="button-card"><img src="../assets/Combined Shape.svg" alt=""></button>
-    </div>
-<ul class="team-list">
-  <li class="team-item">
-    <input type="color" class="color-picker" value="#F8BD1C">
-    <span class="team-name">back-end</span>
+        <div class="header-right">
+          <button class="icon-btn"><img src="../assets/plus-circle-outline (1).svg" alt=""></button>
+          <button class="icon-btn"><img src="../assets/alert-circle-outline.svg" alt=""></button>
+          <button class="icon-btn"><img src="../assets/bell-outline.svg" alt=""></button>
+          <img src="../assets/Male User.svg" alt="Avatar" class="avatar" />
+        </div>
+      </header>
 
-    <div class="actions">
-      <button class="menu-btn"><img src="../assets/Combined Shape.svg" alt=""></button>
-      <div class="menu-options">
-        <button class="edit-btn">Editar</button>
-        <button class="delete-btn">Excluir</button>
+      <div class="cards">
+        <!-- Lista inicial -->
+        <div class="team-container">
+          <div class="team-header">
+            <span class="team-title-text">Times</span>
+            <input type="text" class="team-title-input" style="display: none;" />
+            <div class="actions">
+              <button class="menu-btn"><img src="../assets/Combined Shape.svg" alt=""></button>
+              <div class="menu-options">
+                <button class="edit-btn">Editar</button>
+                <button class="delete-btn">Excluir</button>
+              </div>
+            </div>
+          </div>
+
+          <ul class="team-list">
+            <li class="team-item">
+              <input type="color" class="color-picker" value="#F8BD1C" />
+              <span class="team-name">back-end</span>
+              <div class="actions">
+                <button class="menu-btn"><img src="../assets/Combined Shape.svg" alt=""></button>
+                <div class="menu-options">
+                  <button class="edit-btn">Editar</button>
+                  <button class="delete-btn">Excluir</button>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          <div class="add-function">+ Adicionar um cartão</div>
+        </div>
+
+        <!-- Botão para nova lista -->
+        <div class="team-container title-fixe">
+          <div class="add-list">+ Adicionar outra lista</div>
+        </div>
       </div>
     </div>
-  </li>
-</ul>
+  </section>
 
-
-    <div class="add-function">+ Nova função</div>
-  </div>
-
-</div>
-</div>
-</section>
-
-<script src="../js/app.js"></script>
-
+  <script src="../js/app.js"></script>
 </body>
 </html>

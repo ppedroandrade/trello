@@ -1,9 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-body {
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
+  height: 100%;
 }
+
 
 .header {
   background-color: #fff;
@@ -89,6 +96,7 @@ body {
   height: 24px;
   background-color: #ccc;
   margin-left: 10px;
+  flex-shrink: 0;
 }
 
 /* Card Css */
@@ -103,9 +111,10 @@ body {
 }
 
 .team-container {
-  width: 350px;
-  padding: 1rem;
-  padding-top: 4rem;
+  width: 300px;
+  flex-shrink: 0;
+  background-color: #fff;
+  border-radius: 8px;
 }
 
 .button-card{
@@ -163,6 +172,7 @@ body {
 }
 
 
+
 .add-function {
   margin-top: 1rem;
   padding: 8px;
@@ -171,6 +181,31 @@ body {
   text-align: center;
   color: #333;
   cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-function::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.05);
+  transition: left 0.3s ease;
+  z-index: 0;
+}
+
+.add-function:hover {
+  background-color: #f0f0f0;
+  color: #000;
+  border-color: #c1bcbcad;
+}
+
+.add-function:hover::after {
+  left: 0;
 }
 
 .actions {
@@ -210,3 +245,54 @@ body {
 .menu-options button:hover {
   background-color: #f0f0f0;
 }
+
+.cards{
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 1rem;
+  scroll-behavior: smooth;
+  white-space: nowrap;
+  padding-top: 4rem;
+}
+.cards::-webkit-scrollbar {
+ display: none;
+}
+.cards::-webkit-scrollbar-thumb {
+  display: none;
+}
+
+.add-list {
+  padding: 6px;
+  border: 2px dashed #ccc;
+  border-radius: 6px;
+  text-align: center;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-list::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.05);
+  transition: left 0.3s ease;
+  z-index: 0;
+}
+
+.add-list:hover {
+  background-color: #f0f0f0;
+  color: #000;
+  border-color: #999;
+}
+
+.add-list:hover::after {
+  left: 0;
+}
+
