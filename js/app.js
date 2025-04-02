@@ -52,12 +52,15 @@ function criarLista(titulo = "Sem título", cards = []) {
   return container;
 }
 
-function criarCard(nome = "Sem nome", cor = "#000000") {
+function criarCard(nome = "Sem nome", cor = "#000000", description = "Sem descrição") {
   const li = document.createElement("li");
   li.className = "team-item";
   li.innerHTML = `
     <input type="color" class="color-picker" value="${cor}">
-    <span class="team-name">${nome}</span>
+    <div class="name-description">
+      <span class="team-name">${nome}</span>
+      <span class="team-name">${description}</span>
+    </div>
     <div class="actions">
       <button class="menu-btn"><img src="../assets/Combined Shape.svg" alt=""></button>
       <div class="menu-options">
@@ -187,4 +190,9 @@ function carregarDoLocalStorage() {
     const novaLista = criarLista(lista.titulo, lista.cards);
     wrapper.insertBefore(novaLista, btn);
   });
+}
+
+function limparLocalStorage() {
+  localStorage.removeItem("listas");
+  document.querySelectorAll(".team-container").forEach(container => container.remove());
 }
