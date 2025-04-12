@@ -1,0 +1,7 @@
+{
+  "usuarios": [
+    { "email": "pedro@trello.com" },
+    { "email": "andrade@teste.com" },
+    { "email": "admin@trello.com" }
+  ]
+}
