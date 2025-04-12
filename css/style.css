@@ -105,6 +105,7 @@ html, body {
 /* ===================== LISTS WRAPPER ===================== */
 .cards {
   display: flex;
+  align-items: flex-start; /* <- ESSENCIAL */
   gap: 1rem;
   overflow-x: auto;
   padding: 1.5rem;
@@ -119,14 +120,17 @@ html, body {
 
 /* ===================== LIST ===================== */
 .team-container {
-  width: 272px;
-  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  height: auto;         /* crescer se necessário */
   background-color: #ebecf0;
   border-radius: 12px;
   padding: 8px;
-  display: flex;
-  flex-direction: column;
-  max-height: 100%;
+  width: 272px;
+  flex-shrink: 0;
+  max-height: 53rem;
 }
 
 .team-header {
@@ -147,10 +151,15 @@ html, body {
 }
 
 .team-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  overflow-y: auto;
+  flex-grow: 1;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
 }
+
 
 /* ===================== CARD ===================== */
 .team-item {
@@ -164,6 +173,10 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  cursor: grab;
+}
+.team-item:active {
+  cursor: grabbing;
 }
 
 .team-item:hover {
@@ -199,17 +212,14 @@ html, body {
   font-size: 1.2rem;
   cursor: pointer;
 }
-
 .menu-options {
   display: none;
-  position: absolute;
-  right: 0;
-  top: 20px;
+  position: fixed; /* <- ESSENCIAL */
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 6px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  z-index: 10;
+  z-index: 9999;
 }
 
 .menu-options button {
@@ -228,7 +238,7 @@ html, body {
 
 /* ===================== ADD CARD BUTTON ===================== */
 .add-function {
-  margin-top: 4px;
+  margin-top: auto;
   padding: 6px;
   color: #5e6c84;
   cursor: pointer;
@@ -254,11 +264,10 @@ html, body {
   border: none;
   text-align: left;
   transition: background-color 0.2s ease;
-  width: 272px;
+  width: 100%;
   display: flex;
   align-items: center;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-
 }
 
 .add-list:hover {
@@ -266,24 +275,35 @@ html, body {
 }
 
 .title-fixe {
+  align-self: flex-start;
+  width: 272px;
+  height: auto;
+  padding: 0;
   background: none;
   box-shadow: none;
-  padding: 8px;
-  border-radius: 8px;
-  height: auto;
-  display: flex;
-  align-items: flex-start;
 }
 
 /* ===================== HIDDEN INPUTS ===================== */
 .color-picker {
   display: none;
 }
-
 .edit-input {
-  padding: 6px;
+  font-family: 'Poppins', sans-serif;
   font-size: 0.95rem;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  font-weight: 500;
+  color: #172b4d;
+  padding: 8px 12px;
+  border: 1px solid #dfe1e6;
+  border-radius: 6px;
+  background-color: #fff;
   width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 4px;
+  outline: none;
+  transition: border 0.2s ease;
+}
+
+.edit-input:focus {
+  border: 1px solid #4c9aff;
+  box-shadow: 0 0 0 2px rgba(76, 154, 255, 0.3);
 }
