@@ -231,7 +231,7 @@ function aplicarEventosAddFunction(container) {
   const ul = container.querySelector(".team-list");
 
   addBtn.addEventListener("click", () => {
-    const card = criarCard("Novo time", "Sem descrição");
+    const card = criarCard("Novo Card", "Sem descrição");
     ul.appendChild(card);
     salvarNoLocalStorage();
     atualizarIndicadores(container);
@@ -280,7 +280,7 @@ function aplicarEventosItem(item) {
     prioritySelect.innerHTML = `
       <option value="">Sem prioridade</option>
       <option value="Alta">Alta</option>
-      <option value="Média">Média</option>
+      <option value="Media">Média</option>
       <option value="Baixa">Baixa</option>
     `;
     const currentPriority = item.querySelector(".priority-label")?.classList[1]?.split("-")[1];
