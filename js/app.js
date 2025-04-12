@@ -6,21 +6,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
   carregarDoLocalStorage();
 
+  // Aplica o tema salvo ao carregar a página
+  if (localStorage.getItem("tema") === "dark") {
+    document.body.classList.add("dark-mode");
+  }
+
+  // Configura o botão de alternar tema
+  const toggleBtn = document.querySelector(".theme-toggle");
+  toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    localStorage.setItem("tema", document.body.classList.contains("dark-mode") ? "dark" : "light");
+  });
+
   botaoAdicionarLista.addEventListener("click", () => {
     const lista = criarLista("Nova Lista", []);
     wrapper.insertBefore(lista, wrapper.querySelector(".title-fixe"));
     salvarNoLocalStorage();
   });
 
-document.addEventListener("click", (e) => {
-  if (!e.target.closest(".menu-options") && !e.target.closest(".menu-btn")) {
-    document.querySelectorAll(".menu-options").forEach(menu => {
-      menu.style.display = "none";
-    });
-  }
+  // Fecha menus ao clicar fora
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".menu-options") && !e.target.closest(".menu-btn")) {
+      document.querySelectorAll(".menu-options").forEach(menu => {
+        menu.style.display = "none";
+      });
+    }
+  });
 });
-});
-
 function criarLista(titulo = "Sem título", cards = []) {
   const container = document.createElement("div");
   container.className = "team-container";
