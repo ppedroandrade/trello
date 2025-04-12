@@ -307,6 +307,59 @@ html, body {
   border: 1px solid #4c9aff;
   box-shadow: 0 0 0 2px rgba(76, 154, 255, 0.3);
 }
+/* ===================== SELECT  ===================== */
+.project-selector {
+  background-color: #f4f5f7;
+  border: 1px solid #dfe1e6;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 0.875rem;
+  color: #172b4d;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.project-selector:focus {
+  border-color: #4c9aff;
+  box-shadow: 0 0 0 2px rgba(76, 154, 255, 0.3);
+}
+
+/* ===================== TOOLTIP ===================== */
+.new-project-btn {
+  position: relative;
+}
+
+.new-project-btn:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 8px); /* Aparece abaixo do botão */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #172b4d;
+  color: #fff;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 9999;
+  opacity: 1;
+  pointer-events: none;
+}
+
+.new-project-btn:hover::before {
+  content: '';
+  position: absolute;
+  top: calc(100% + 2px); /* Coloca a seta acima do balão */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent #172b4d transparent;
+  z-index: 9999;
+}
+
 /* ===================== Dark Mode ===================== */
 
 body.dark-mode {

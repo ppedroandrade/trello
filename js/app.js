@@ -1,8 +1,45 @@
 let draggedCard = null;
+let projetoAtual = localStorage.getItem("projetoAtual") || "Projeto Principal";
 
 document.addEventListener("DOMContentLoaded", () => {
   const wrapper = document.querySelector(".cards");
   const botaoAdicionarLista = document.querySelector(".add-list");
+
+  const seletor = document.querySelector(".project-selector");
+const novoProjetoBtn = document.querySelector(".new-project-btn");
+
+function atualizarSeletorProjetos() {
+  const projetos = JSON.parse(localStorage.getItem("projetos")) || {};
+  seletor.innerHTML = "";
+
+  Object.keys(projetos).forEach(nome => {
+    const opt = document.createElement("option");
+    opt.value = nome;
+    opt.textContent = nome;
+    if (nome === projetoAtual) opt.selected = true;
+    seletor.appendChild(opt);
+  });
+}
+
+seletor.addEventListener("change", () => {
+  projetoAtual = seletor.value;
+  localStorage.setItem("projetoAtual", projetoAtual);
+  carregarDoLocalStorage();
+});
+
+novoProjetoBtn.addEventListener("click", () => {
+  const nome = prompt("Nome do novo projeto:");
+  if (!nome) return;
+  const projetos = JSON.parse(localStorage.getItem("projetos")) || {};
+  if (!projetos[nome]) projetos[nome] = [];
+  localStorage.setItem("projetos", JSON.stringify(projetos));
+  projetoAtual = nome;
+  localStorage.setItem("projetoAtual", projetoAtual);
+  atualizarSeletorProjetos();
+  carregarDoLocalStorage();
+});
+
+atualizarSeletorProjetos();
 
   // Aplica o tema salvo
   if (localStorage.getItem("tema") === "dark") {
@@ -233,13 +270,21 @@ function salvarNoLocalStorage() {
     listas.push({ titulo, cards });
   });
 
-  localStorage.setItem("listas", JSON.stringify(listas));
+  const projetos = JSON.parse(localStorage.getItem("projetos")) || {};
+  projetos[projetoAtual] = listas;
+  localStorage.setItem("projetos", JSON.stringify(projetos));
 }
 
 function carregarDoLocalStorage() {
-  const listasSalvas = JSON.parse(localStorage.getItem("listas")) || [];
+  const projetos = JSON.parse(localStorage.getItem("projetos")) || {};
+  const listasSalvas = projetos[projetoAtual] || [];
   const wrapper = document.querySelector(".cards");
   const btn = wrapper.querySelector(".title-fixe");
+
+  // Limpa antes
+  document.querySelectorAll(".team-container").forEach(c => {
+    if (!c.classList.contains("title-fixe")) c.remove();
+  });
 
   listasSalvas.forEach(lista => {
     if (!lista.titulo || lista.titulo.trim() === "") return;
