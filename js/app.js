@@ -1,58 +1,54 @@
-let draggedCard = null;
 let projetoAtual = localStorage.getItem("projetoAtual") || "Projeto Principal";
 
 document.addEventListener("DOMContentLoaded", () => {
   const wrapper = document.querySelector(".cards");
   const botaoAdicionarLista = document.querySelector(".add-list");
 
-  const seletor = document.querySelector(".project-selector");
-const novoProjetoBtn = document.querySelector(".new-project-btn");
-
-function atualizarSeletorProjetos() {
-  const projetos = JSON.parse(localStorage.getItem("projetos")) || {};
-  seletor.innerHTML = "";
-
-  Object.keys(projetos).forEach(nome => {
-    const opt = document.createElement("option");
-    opt.value = nome;
-    opt.textContent = nome;
-    if (nome === projetoAtual) opt.selected = true;
-    seletor.appendChild(opt);
-  });
-}
-
-seletor.addEventListener("change", () => {
-  projetoAtual = seletor.value;
-  localStorage.setItem("projetoAtual", projetoAtual);
-  carregarDoLocalStorage();
-});
-
-novoProjetoBtn.addEventListener("click", () => {
-  const nome = prompt("Nome do novo projeto:");
-  if (!nome) return;
-  const projetos = JSON.parse(localStorage.getItem("projetos")) || {};
-  if (!projetos[nome]) projetos[nome] = [];
-  localStorage.setItem("projetos", JSON.stringify(projetos));
-  projetoAtual = nome;
-  localStorage.setItem("projetoAtual", projetoAtual);
-  atualizarSeletorProjetos();
-  carregarDoLocalStorage();
-});
-
-atualizarSeletorProjetos();
-
-  // Aplica o tema salvo
   if (localStorage.getItem("tema") === "dark") {
     document.body.classList.add("dark-mode");
   }
 
-  // Alternância de tema
   const toggleBtn = document.querySelector(".theme-toggle");
   toggleBtn.addEventListener("click", () => {
     document.body.classList.toggle("dark-mode");
     localStorage.setItem("tema", document.body.classList.contains("dark-mode") ? "dark" : "light");
   });
 
+  const seletor = document.querySelector(".project-selector");
+  const novoProjetoBtn = document.querySelector(".new-project-btn");
+
+  function atualizarSeletorProjetos() {
+    const projetos = JSON.parse(localStorage.getItem("projetos")) || {};
+    seletor.innerHTML = "";
+
+    Object.keys(projetos).forEach(nome => {
+      const opt = document.createElement("option");
+      opt.value = nome;
+      opt.textContent = nome;
+      if (nome === projetoAtual) opt.selected = true;
+      seletor.appendChild(opt);
+    });
+  }
+
+  seletor.addEventListener("change", () => {
+    projetoAtual = seletor.value;
+    localStorage.setItem("projetoAtual", projetoAtual);
+    carregarDoLocalStorage();
+  });
+
+  novoProjetoBtn.addEventListener("click", () => {
+    const nome = prompt("Nome do novo projeto:");
+    if (!nome) return;
+    const projetos = JSON.parse(localStorage.getItem("projetos")) || {};
+    if (!projetos[nome]) projetos[nome] = [];
+    localStorage.setItem("projetos", JSON.stringify(projetos));
+    projetoAtual = nome;
+    localStorage.setItem("projetoAtual", projetoAtual);
+    atualizarSeletorProjetos();
+    carregarDoLocalStorage();
+  });
+
+  atualizarSeletorProjetos();
   carregarDoLocalStorage();
 
   botaoAdicionarLista.addEventListener("click", () => {
@@ -61,15 +57,68 @@ atualizarSeletorProjetos();
     salvarNoLocalStorage();
   });
 
-  // Fecha menus ao clicar fora
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest(".menu-options") && !e.target.closest(".menu-btn")) {
-      document.querySelectorAll(".menu-options").forEach(menu => {
-        menu.style.display = "none";
-      });
-    }
-  });
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".menu-options") && !e.target.closest(".menu-btn")) {
+    document.querySelectorAll(".menu-options").forEach(menu => {
+      menu.style.display = "none";
+    });
+  }
+
+  if (!e.target.closest(".team-item")) {
+    document.querySelectorAll(".team-item").forEach(item => {
+      const nameInput = item.querySelector("input.edit-input[type='text']");
+      const descInput = item.querySelector("textarea.edit-input");
+      const prioritySelect = item.querySelector("select.edit-input");
+      const imageInput = item.querySelector("input[type='file'].edit-input");
+
+      if (nameInput) {
+        const span = document.createElement("span");
+        span.className = "team-name";
+        span.textContent = nameInput.value || "Sem nome";
+        nameInput.replaceWith(span);
+      }
+
+      if (descInput) {
+        const span = document.createElement("span");
+        span.className = "team-description";
+        span.textContent = descInput.value || "Sem descrição";
+        descInput.replaceWith(span);
+      }
+
+      if (prioritySelect) {
+        item.querySelector(".priority-label")?.remove();
+        if (prioritySelect.value) {
+          const tag = document.createElement("div");
+          tag.className = `priority-label priority-${prioritySelect.value.toLowerCase()}`;
+          item.prepend(tag);
+        }
+        prioritySelect.remove();
+      }
+
+      if (imageInput) {
+        imageInput.remove();
+      }
+    });
+
+    salvarNoLocalStorage();
+  }
 });
+});
+
+function atualizarIndicadores(container) {
+  const ul = container.querySelector(".team-list");
+  const total = ul.querySelectorAll(".team-item").length;
+  const alta = ul.querySelectorAll(".priority-label.priority-alta").length;
+
+  let indicador = container.querySelector(".team-indicator");
+  if (!indicador) {
+    indicador = document.createElement("div");
+    indicador.className = "team-indicator";
+    container.insertBefore(indicador, ul);
+  }
+
+  indicador.textContent = `Total: ${total} | Alta prioridade: ${alta}`;
+}
 
 function criarLista(titulo = "Sem título", cards = []) {
   const container = document.createElement("div");
@@ -87,6 +136,7 @@ function criarLista(titulo = "Sem título", cards = []) {
         </div>
       </div>
     </div>
+    <div class="team-indicator"></div>
     <ul class="team-list"></ul>
     <div class="add-function">+ Adicionar um cartão</div>
   `;
@@ -94,29 +144,36 @@ function criarLista(titulo = "Sem título", cards = []) {
   const ul = container.querySelector(".team-list");
 
   cards.forEach(card => {
-    const li = criarCard(card.nome, card.description);
+    const li = criarCard(card.nome, card.description, card.image, card.priority);
     ul.appendChild(li);
   });
 
   aplicarEdicaoTitulo(container);
   aplicarEventosAddFunction(container);
 
-  // Ativa SortableJS na lista
   new Sortable(ul, {
     group: 'cards',
     animation: 150,
     ghostClass: 'ghost-card',
-    onEnd: () => salvarNoLocalStorage()
+    onEnd: () => {
+      salvarNoLocalStorage();
+      atualizarIndicadores(container);
+    }
   });
 
+  atualizarIndicadores(container);
   return container;
 }
 
-function criarCard(nome = "Sem nome", description = "Sem descrição") {
+function criarCard(nome = "Sem nome", description = "Sem descrição", image = "", priority = "") {
   const li = document.createElement("li");
   li.className = "team-item";
 
+  const priorityClass = priority ? `priority-${priority.toLowerCase()}` : "";
+
   li.innerHTML = `
+    ${priority ? `<div class="priority-label ${priorityClass}"></div>` : ""}
+    ${image ? `<img src="${image}" class="card-image" />` : ""}
     <div class="name-description">
       <span class="team-name">${nome}</span>
       <span class="team-description">${description}</span>
@@ -177,6 +234,7 @@ function aplicarEventosAddFunction(container) {
     const card = criarCard("Novo time", "Sem descrição");
     ul.appendChild(card);
     salvarNoLocalStorage();
+    atualizarIndicadores(container);
   });
 }
 
@@ -186,7 +244,6 @@ function aplicarEventosItem(item) {
 
   menuBtn.addEventListener("click", (e) => {
     e.stopPropagation();
-
     document.querySelectorAll(".menu-options").forEach(m => m.style.display = "none");
 
     if (menu.style.display === "block") {
@@ -210,13 +267,66 @@ function aplicarEventosItem(item) {
     nameInput.value = nameSpan.textContent;
     nameInput.className = "edit-input";
 
-    const descInput = document.createElement("input");
-    descInput.type = "text";
+    const descInput = document.createElement("textarea");
     descInput.value = descSpan.textContent;
     descInput.className = "edit-input";
 
     nameSpan.replaceWith(nameInput);
     descSpan.replaceWith(descInput);
+
+    // PRIORIDADE
+    const prioritySelect = document.createElement("select");
+    prioritySelect.className = "edit-input";
+    prioritySelect.innerHTML = `
+      <option value="">Sem prioridade</option>
+      <option value="Alta">Alta</option>
+      <option value="Média">Média</option>
+      <option value="Baixa">Baixa</option>
+    `;
+    const currentPriority = item.querySelector(".priority-label")?.classList[1]?.split("-")[1];
+    if (currentPriority) {
+      prioritySelect.value = currentPriority.charAt(0).toUpperCase() + currentPriority.slice(1);
+    }
+    item.querySelector(".name-description").appendChild(prioritySelect);
+
+    // IMAGEM
+    const imageInput = document.createElement("input");
+    imageInput.type = "file";
+    imageInput.accept = "image/*";
+    imageInput.className = "edit-input";
+    item.querySelector(".name-description").appendChild(imageInput);
+
+    imageInput.addEventListener("change", () => {
+      const file = imageInput.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const existingImage = item.querySelector(".card-image");
+        if (existingImage) {
+          existingImage.src = reader.result;
+        } else {
+          const img = document.createElement("img");
+          img.src = reader.result;
+          img.className = "card-image";
+          item.prepend(img);
+        }
+        salvarNoLocalStorage();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    prioritySelect.addEventListener("change", () => {
+      item.querySelector(".priority-label")?.remove();
+
+      if (prioritySelect.value) {
+        const tag = document.createElement("div");
+        tag.className = `priority-label priority-${prioritySelect.value.toLowerCase()}`;
+        item.prepend(tag);
+      }
+
+      salvarNoLocalStorage();
+    });
 
     nameInput.addEventListener("blur", () => {
       const newNameSpan = document.createElement("span");
@@ -264,7 +374,11 @@ function salvarNoLocalStorage() {
     container.querySelectorAll(".team-item").forEach(item => {
       const nome = item.querySelector(".team-name")?.textContent || "Sem nome";
       const description = item.querySelector(".team-description")?.textContent || "Sem descrição";
-      cards.push({ nome, description });
+      const image = item.querySelector(".card-image")?.src || "";
+      const priorityClass = item.querySelector(".priority-label")?.classList[1] || "";
+      const priority = priorityClass.split("-")[1]?.charAt(0).toUpperCase() + priorityClass.split("-")[1]?.slice(1) || "";
+
+      cards.push({ nome, description, image, priority });
     });
 
     listas.push({ titulo, cards });
@@ -281,7 +395,6 @@ function carregarDoLocalStorage() {
   const wrapper = document.querySelector(".cards");
   const btn = wrapper.querySelector(".title-fixe");
 
-  // Limpa antes
   document.querySelectorAll(".team-container").forEach(c => {
     if (!c.classList.contains("title-fixe")) c.remove();
   });
