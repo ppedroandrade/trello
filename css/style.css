@@ -1,25 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 html, body {
   font-family: 'Poppins', sans-serif;
-  font-weight: 400;
   height: 100%;
+  background-color: rgba(195, 195, 195, 0.39);
+  color: #172b4d;
 }
 
-
+/* ===================== HEADER ===================== */
 .header {
-  background-color: #fff;
-  padding: 6px 12px;
+  background-color: #ffffff;
+  height: 48px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #ddd;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
+  padding: 0 12px;
+  border-bottom: 1px solid #e1e4e8;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .header-left,
@@ -27,60 +34,64 @@ html, body {
 .header-right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
+/* Logo Trello */
 .logo {
-  height: 30px;
+  height: 26px;
 }
 
+/* Botão Boards estilo Trello */
 .menu-button {
   display: flex;
   align-items: center;
-  gap: 5px;
-  background: none;
-  border: none;
+  gap: 6px;
+  background-color: #f4f5f7;
+  border: 1px solid #dfe1e6;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 0.875rem;
+  color: #172b4d;
   font-weight: 500;
   cursor: pointer;
 }
 
+/* Input de busca */
 .search-box {
   position: relative;
+  background-color: #f4f5f7;
+  border-radius: 20px;
+  padding: 4px 12px;
   display: flex;
   align-items: center;
 }
 
 .search-input {
-  padding: 10px 75px 10px 360px;
   border: none;
-  border-radius: 20px;
-  background-color: #f0f0f0;
-  width: 200px;
+  background: transparent;
   outline: none;
+  padding: 6px 8px;
+  font-size: 0.875rem;
+  width: 160px;
 }
 
 .search-icon {
-  position: absolute;
-  right: 10px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  color: #555;
-}
-
-.search-button {
   background: none;
   border: none;
   font-size: 1rem;
   cursor: pointer;
+  color: #5e6c84;
+  margin-left: -4px;
 }
 
+/* Ícones da direita */
 .icon-btn {
   background: none;
   border: none;
   font-size: 1.2rem;
   cursor: pointer;
+  color: #5e6c84;
 }
 
 .avatar {
@@ -91,58 +102,48 @@ html, body {
   border: 2px solid #ccc;
 }
 
-.divider {
-  width: 1px;
-  height: 24px;
-  background-color: #ccc;
-  margin-left: 10px;
-  flex-shrink: 0;
+/* ===================== LISTS WRAPPER ===================== */
+.cards {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 1.5rem;
+  white-space: nowrap;
+  scroll-behavior: smooth;
 }
 
-/* Card Css */
+.cards::-webkit-scrollbar,
+.cards::-webkit-scrollbar-thumb {
+  display: none;
+}
 
-.card-fixed {
-  padding: 20px;
-  padding: 2rem;
-  align-items: center;
+/* ===================== LIST ===================== */
+.team-container {
+  width: 272px;
+  flex-shrink: 0;
+  background-color: #ebecf0;
+  border-radius: 12px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-}
-
-.team-container {
-  width: 300px;
-  flex-shrink: 0;
-  background-color: #fff;
-  border-radius: 8px;
-}
-
-.button-card{
-  background: none;
-  border: none;
-  font-size: 1rem;
-  cursor: pointer;
+  max-height: 100%;
 }
 
 .team-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
-  position: relative;
-  background-color: #f8f9fa;
+  font-weight: 600;
+  font-size: 1rem;
   margin-bottom: 8px;
-  padding: 8px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .team-header input {
   font-size: 1rem;
-  padding: 2px 4px;
-  width: 150px;
+  padding: 4px 6px;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
 .team-list {
@@ -151,68 +152,42 @@ html, body {
   margin: 0;
 }
 
+/* ===================== CARD ===================== */
 .team-item {
-  background-color: #f8f9fa;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  padding: 10px 12px;
   margin-bottom: 8px;
-  padding: 8px;
-  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
   display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.name-description{
- display: flex;
-flex-direction: column;
-align-items: flex-start;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.color-picker {
-  border: none;
-  background: none;
-  cursor: pointer;
-  width: 36px;
-  height: 18px;
-  padding: 0;
-  border-radius: 50px;
+.team-item:hover {
+  background-color: #f4f5f7;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
-
-
-.add-function {
-  margin-top: 1rem;
-  padding: 8px;
-  border: 2px dashed #ccc;
-  border-radius: 6px;
-  text-align: center;
-  color: #333;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+.name-description {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.add-function::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.05);
-  transition: left 0.3s ease;
-  z-index: 0;
+.team-name {
+  font-weight: 500;
+  font-size: 0.95rem;
 }
 
-.add-function:hover {
-  background-color: #f0f0f0;
-  color: #000;
-  border-color: #c1bcbcad;
+.team-description {
+  font-size: 0.85rem;
+  color: #5e6c84;
 }
 
-.add-function:hover::after {
-  left: 0;
-}
-
+/* ===================== ACTIONS ===================== */
 .actions {
   margin-left: auto;
   position: relative;
@@ -233,7 +208,7 @@ align-items: flex-start;
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   z-index: 10;
 }
 
@@ -251,53 +226,64 @@ align-items: flex-start;
   background-color: #f0f0f0;
 }
 
-.cards{
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  padding: 1rem;
-  scroll-behavior: smooth;
-  white-space: nowrap;
-  padding-top: 4rem;
-}
-.cards::-webkit-scrollbar {
- display: none;
-}
-.cards::-webkit-scrollbar-thumb {
-  display: none;
-}
-
-.add-list {
+/* ===================== ADD CARD BUTTON ===================== */
+.add-function {
+  margin-top: 4px;
   padding: 6px;
-  border: 2px dashed #ccc;
-  border-radius: 6px;
-  text-align: center;
-  color: #333;
+  color: #5e6c84;
   cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  text-align: left;
 }
 
-.add-list::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.05);
-  transition: left 0.3s ease;
-  z-index: 0;
+.add-function:hover {
+  background-color: rgba(9, 30, 66, 0.08);
+}
+
+/* ===================== ADD LIST BUTTON ===================== */
+.add-list {
+  background-color: rgba(255, 255, 255, 0.24);
+  color: #172b4d;
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  text-align: left;
+  transition: background-color 0.2s ease;
+  width: 272px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
 }
 
 .add-list:hover {
-  background-color: #f0f0f0;
-  color: #000;
-  border-color: #999;
+  background-color: rgba(9, 30, 66, 0.13);
 }
 
-.add-list:hover::after {
-  left: 0;
+.title-fixe {
+  background: none;
+  box-shadow: none;
+  padding: 8px;
+  border-radius: 8px;
+  height: auto;
+  display: flex;
+  align-items: flex-start;
 }
 
+/* ===================== HIDDEN INPUTS ===================== */
+.color-picker {
+  display: none;
+}
+
+.edit-input {
+  padding: 6px;
+  font-size: 0.95rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+}

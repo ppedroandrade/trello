@@ -52,14 +52,13 @@ function criarLista(titulo = "Sem título", cards = []) {
   return container;
 }
 
-function criarCard(nome = "Sem nome", cor = "#000000", description = "Sem descrição") {
+function criarCard(nome = "Sem nome", description = "Sem descrição") {
   const li = document.createElement("li");
   li.className = "team-item";
   li.innerHTML = `
-    <input type="color" class="color-picker" value="${cor}">
     <div class="name-description">
       <span class="team-name">${nome}</span>
-      <span class="team-name">${description}</span>
+      <span class="team-description">${description}</span>
     </div>
     <div class="actions">
       <button class="menu-btn"><img src="../assets/Combined Shape.svg" alt=""></button>
@@ -92,7 +91,7 @@ function aplicarEdicaoTitulo(container) {
   });
 
   input.addEventListener("blur", () => {
-    span.textContent = input.value.trim() || "Sem título";
+    span.textContent = input.value.trim();
     span.style.display = "inline-block";
     input.style.display = "none";
     salvarNoLocalStorage();
@@ -113,7 +112,7 @@ function aplicarEventosAddFunction(container) {
   const ul = container.querySelector(".team-list");
 
   addBtn.addEventListener("click", () => {
-    const card = criarCard("Novo time", "#000000");
+    const card = criarCard("Novo time", "Sem descrição");
     ul.appendChild(card);
     salvarNoLocalStorage();
   });
@@ -156,26 +155,24 @@ function aplicarEventosItem(item) {
     item.remove();
     salvarNoLocalStorage();
   });
-
-  item.querySelector(".color-picker").addEventListener("input", () => {
-    salvarNoLocalStorage();
-  });
 }
 
 function salvarNoLocalStorage() {
   const listas = [];
 
   document.querySelectorAll(".team-container").forEach(container => {
-    const titulo = container.querySelector(".team-title-text")?.textContent || "Sem título";
+    const titulo = container.querySelector(".team-title-text")?.textContent.trim() || "";
     const cards = [];
+
+    if (titulo === "") return;
+
     container.querySelectorAll(".team-item").forEach(item => {
       const nome = item.querySelector(".team-name")?.textContent || "Sem nome";
-      const cor = item.querySelector(".color-picker")?.value || "#000000";
+      
       cards.push({ nome, cor });
     });
-    if (cards.length > 0 || titulo !== "Nova Lista") {
-      listas.push({ titulo, cards });
-    }
+
+    listas.push({ titulo, cards });
   });
 
   localStorage.setItem("listas", JSON.stringify(listas));
@@ -187,6 +184,7 @@ function carregarDoLocalStorage() {
   const btn = wrapper.querySelector(".title-fixe");
 
   listasSalvas.forEach(lista => {
+    if (!lista.titulo || lista.titulo.trim() === "") return;
     const novaLista = criarLista(lista.titulo, lista.cards);
     wrapper.insertBefore(novaLista, btn);
   });
