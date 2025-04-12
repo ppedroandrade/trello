@@ -4,19 +4,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const wrapper = document.querySelector(".cards");
   const botaoAdicionarLista = document.querySelector(".add-list");
 
-  carregarDoLocalStorage();
-
-  // Aplica o tema salvo ao carregar a página
+  // Aplica o tema salvo
   if (localStorage.getItem("tema") === "dark") {
     document.body.classList.add("dark-mode");
   }
 
-  // Configura o botão de alternar tema
+  // Alternância de tema
   const toggleBtn = document.querySelector(".theme-toggle");
   toggleBtn.addEventListener("click", () => {
     document.body.classList.toggle("dark-mode");
     localStorage.setItem("tema", document.body.classList.contains("dark-mode") ? "dark" : "light");
   });
+
+  carregarDoLocalStorage();
 
   botaoAdicionarLista.addEventListener("click", () => {
     const lista = criarLista("Nova Lista", []);
@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
 function criarLista(titulo = "Sem título", cards = []) {
   const container = document.createElement("div");
   container.className = "team-container";
@@ -63,22 +64,13 @@ function criarLista(titulo = "Sem título", cards = []) {
   aplicarEdicaoTitulo(container);
   aplicarEventosAddFunction(container);
 
-ul.addEventListener("dragover", handleDragOver);
-ul.addEventListener("drop", handleDrop);
-
-container.addEventListener("dragover", (e) => {
-  if (e.target === container || e.target.classList.contains("add-function")) {
-    e.preventDefault();
-  }
-});
-
-container.addEventListener("drop", (e) => {
-  e.preventDefault();
-  if (draggedCard) {
-    ul.appendChild(draggedCard);
-    salvarNoLocalStorage();
-  }
-});
+  // Ativa SortableJS na lista
+  new Sortable(ul, {
+    group: 'cards',
+    animation: 150,
+    ghostClass: 'ghost-card',
+    onEnd: () => salvarNoLocalStorage()
+  });
 
   return container;
 }
@@ -86,7 +78,6 @@ container.addEventListener("drop", (e) => {
 function criarCard(nome = "Sem nome", description = "Sem descrição") {
   const li = document.createElement("li");
   li.className = "team-item";
-  li.draggable = true;
 
   li.innerHTML = `
     <div class="name-description">
@@ -101,9 +92,6 @@ function criarCard(nome = "Sem nome", description = "Sem descrição") {
       </div>
     </div>
   `;
-
-  li.addEventListener("dragstart", handleDragStart);
-  li.addEventListener("dragend", handleDragEnd);
 
   aplicarEventosItem(li);
   return li;
@@ -159,30 +147,23 @@ function aplicarEventosItem(item) {
   const menuBtn = item.querySelector(".menu-btn");
   const menu = item.querySelector(".menu-options");
 
-  // Botão de abrir o menu (com posição fixa e visível corretamente)
   menuBtn.addEventListener("click", (e) => {
-    e.stopPropagation(); // evita conflito com o listener global de clique
+    e.stopPropagation();
 
-    // Fecha todos os outros menus antes
     document.querySelectorAll(".menu-options").forEach(m => m.style.display = "none");
 
-    // Toggle: se já está aberto, fecha
     if (menu.style.display === "block") {
       menu.style.display = "none";
       return;
     }
 
-    // Calcula posição do botão
     const btnRect = menuBtn.getBoundingClientRect();
-
-    // Posiciona o menu como FIXO na tela
     menu.style.position = "fixed";
     menu.style.top = `${btnRect.bottom + window.scrollY}px`;
     menu.style.left = `${btnRect.left}px`;
     menu.style.display = "block";
   });
 
-  // Botão "Editar"
   item.querySelector(".edit-btn").addEventListener("click", () => {
     const nameSpan = item.querySelector(".team-name");
     const descSpan = item.querySelector(".team-description");
@@ -228,7 +209,6 @@ function aplicarEventosItem(item) {
     menu.style.display = "none";
   });
 
-  // Botão "Excluir"
   item.querySelector(".delete-btn").addEventListener("click", () => {
     item.remove();
     salvarNoLocalStorage();
@@ -266,35 +246,4 @@ function carregarDoLocalStorage() {
     const novaLista = criarLista(lista.titulo, lista.cards);
     wrapper.insertBefore(novaLista, btn);
   });
-}
-
-function limparLocalStorage() {
-  localStorage.removeItem("listas");
-  document.querySelectorAll(".team-container").forEach(container => container.remove());
-}
-
-// Drag and Drop
-
-function handleDragStart(e) {
-  draggedCard = this;
-  setTimeout(() => {
-    this.style.display = "none";
-  }, 0);
-}
-
-function handleDragEnd(e) {
-  this.style.display = "flex";
-  draggedCard = null;
-}
-
-function handleDragOver(e) {
-  e.preventDefault();
-}
-
-function handleDrop(e) {
-  e.preventDefault();
-  if (draggedCard && this.classList.contains("team-list")) {
-    this.appendChild(draggedCard);
-    salvarNoLocalStorage();
-  }
 }
