@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trello - Login</title>
   <link rel="stylesheet" href="../css/style-login.css">
 </head>
+
 <body>
   <div class="backgrounds">
     <img src="../assets/Logo-bck.svg" class="bg-ilustra" alt="Ilustração">
@@ -26,15 +28,16 @@
           <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google">
           Entrar com Google
         </button>
-<button class="social-btn microsoft">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
-  Entrar com Microsoft
-</button>
+        <button class="social-btn microsoft">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
+          Entrar com Microsoft
+        </button>
 
-<button class="social-btn apple">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" style="filter: invert(1);">
-  Entrar com Apple
-</button>
+        <button class="social-btn apple">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple"
+            style="filter: invert(1);">
+          Entrar com Apple
+        </button>
         <button class="social-btn slack">
           <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/slack/slack-original.svg" alt="Slack">
           Entrar com Slack
@@ -48,33 +51,34 @@
     </div>
   </div>
 
-<script>
-  async function entrar() {
-    const emailInput = document.querySelector('input[type="email"]');
-    const email = emailInput.value.trim().toLowerCase();
+  <script>
+    async function entrar() {
+      const emailInput = document.querySelector('input[type="email"]');
+      const email = emailInput.value.trim().toLowerCase();
 
-    if (!email) {
-      alert("Por favor, insira seu e-mail.");
-      return;
-    }
-
-    try {
-      const response = await fetch("data.json");
-      const data = await response.json();
-
-      const existe = data.usuarios.some(user => user.email.toLowerCase() === email);
-
-      if (existe) {
-        localStorage.setItem("usuario", email);
-        window.location.href = "main.html";
-      } else {
-        alert("E-mail não encontrado. Verifique ou crie uma conta.");
+      if (!email) {
+        alert("Por favor, insira seu e-mail.");
+        return;
       }
-    } catch (error) {
-      console.error("Erro ao carregar data.json:", error);
-      alert("Erro interno. Tente novamente mais tarde.");
+
+      try {
+        const response = await fetch("data.json");
+        const data = await response.json();
+
+        const existe = data.usuarios.some(user => user.email.toLowerCase() === email);
+
+        if (existe) {
+          localStorage.setItem("usuario", email);
+          window.location.href = "main.html";
+        } else {
+          alert("E-mail não encontrado. Verifique ou crie uma conta.");
+        }
+      } catch (error) {
+        console.error("Erro ao carregar data.json:", error);
+        alert("Erro interno. Tente novamente mais tarde.");
+      }
     }
-  }
-</script>
+  </script>
 </body>
+
 </html>
